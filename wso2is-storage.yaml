@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-wso2is-shared-deployment-volume
+  labels:
+    type: local
+    app: wso2is-shared-deployment
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/opt/wso2is-shared-deployment"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-wso2is-shared-tenants-volume
+  labels:
+    type: local
+    app: wso2is-shared-tenants
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/opt/wso2is-shared-tenants"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-wso2is-shared-deployment-claim
+  namespace: wso2
+  labels:
+    app: wso2is-shared-deployment
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  volumeMode: Filesystem
+  volumeName: pv-wso2is-shared-deployment-volume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-wso2is-shared-tenants-claim
+  namespace: wso2
+  labels:
+    app: wso2is-shared-tenants
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  volumeMode: Filesystem
+  volumeName: pv-wso2is-shared-tenants-volume
